@@ -1,19 +1,25 @@
-const express = require("express");
+import express from "express";
 const app = express();
+const port = 3000;
 
-app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
-
-app.get("/", (_req, res) => {
+app.get("/", (req, res) => {
   const today = new Date();
   const day = today.getDay(); // 0 (Sunday) to 6 (Saturday)
-  const type =
-    day === 0 || day === 6
-      ? "It's weekend, time to build Taco Town"
-      : "It's weekday, time to learn EJS";
-  res.render("index.ejs", { type });
+  // console.log(day); // Log the current day of the week
+  let type = "a weekday";
+  let advice = "Stay focused and productive";
+
+  if (day === 0 || day === 6) {
+    type = "a weekend";
+    advice = "Step back and relax!";
+  }
+
+  res.render("index.ejs", {
+    dayType: type,
+    advice: advice,
+  });
 });
 
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
